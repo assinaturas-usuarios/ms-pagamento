@@ -36,7 +36,6 @@ public class RenovacaoSolicitadaConsumer {
     try {
       useCase.processar(evento);
       ack.acknowledge();
-      log.info("Renovação processada com sucesso: assinaturaId={}", evento.assinaturaId());
     } catch (Exception e) {
       log.error("Erro ao processar renovação: assinaturaId={}", evento.assinaturaId(), e);
       throw e;

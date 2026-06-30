@@ -107,6 +107,37 @@ Cobertura mínima configurada: **90% de linhas**.
 
 ---
 
+### Contadores de Métricas
+
+- **Observabilidade:** dashboard Grafana exibe taxa de aprovacao em tempo real.
+- **Alertas:** `assinatura.suspensas.total` aumentando alerta problema no gateway de pagamento.
+- **SLIs/SLOs:** metrica `assinatura.renovacoes.resultado` permite calcular taxa de sucesso de renovações.
+- **Custo zero em codigo:** `counter.increment()` — não afeta a lógica de negócio.
+
+### Dashboard local: Prometheus + Grafana via Docker
+
+O projeto ja expoe o endpoint `/actuator/prometheus` (configurado em `application.yml`
+com `include: health,info,metrics,prometheus`).
+
+### Tracing distribuido via headers
+
+O Spring Kafka + Micrometer Tracing propagam o `traceId` automaticamente nos
+headers das mensagens Kafka. O mesmo `traceId` atravessa ms-assinatura -> Kafka
+-> ms-pagamento -> Kafka -> ms-assinatura. 
+
+Com Micrometer e Zipkin, uma unica tela mostra:
+  [HTTP POST /v1/assinaturas]         50ms
+    [R2DBC: SELECT usuario_ativo]     10ms
+    [HTTP GET ms-usuario/usuarios]    80ms  <- gargalo!
+    [R2DBC: INSERT assinaturas]       15ms
+    [Kafka PRODUCE renovacao]          5ms
+    ...
+
+### Logstash + Elasticsearch (ELK)
+
+Logs centralizados e busca operacional para os três microsservicos.
+Com 3 microsservicos rodando juntos, evita o desgaste e perda de dados ao olhar logs por container/pod.
+
 ### Sealed Classes + Pattern Matching (Java 17/21)
 
 `ResultadoPagamento` é uma sealed interface com dois casos: `Aprovado` e `Recusado`. O processamento usa pattern matching para switch, eliminando a necessidade de `instanceof` sequenciais e garantindo que o compilador exija cobertura de todos os casos.
