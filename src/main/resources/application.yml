@@ -13,6 +13,9 @@ spring:
     show-sql: false
   flyway:
     enabled: true
+    url: ${DB_FLYWAY_URL:jdbc:postgresql://localhost:5432/pagamento_db}
+    user: ${DB_USERNAME:admin}
+    password: ${DB_PASSWORD:admin123}
     locations: classpath:db/migration
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}

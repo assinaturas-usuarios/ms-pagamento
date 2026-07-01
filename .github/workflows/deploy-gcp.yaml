@@ -36,10 +36,15 @@ jobs:
 
       - name: Build and Push Docker image
         run: |
-          IMAGE_NAME="${{ env.ARTIFACT_REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:${{ github.sha }}"
-          docker build -t $IMAGE_NAME .
-          docker push $IMAGE_NAME
-          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
+          IMAGE_PATH="${{ env.ARTIFACT_REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}/${{ env.SERVICE_NAME }}:${{ github.sha }}"
+          
+          echo "Building image: $IMAGE_PATH"
+          docker build -t $IMAGE_PATH .
+          
+          echo "Pushing image..."
+          docker push $IMAGE_PATH
+          
+          echo "IMAGE_NAME=$IMAGE_PATH" >> $GITHUB_ENV
 
       - name: Deploy to Cloud Run
         run: |
@@ -48,5 +53,24 @@ jobs:
             --region ${{ env.REGION }} \
             --platform managed \
             --allow-unauthenticated \
-            --set-env-vars="SPRING_PROFILES_ACTIVE=cloud" \
-            --port 8083
+            --port 8083 \
+            --timeout 300 \
+            --add-cloudsql-instances="${{ secrets.CLOUD_SQL_INSTANCE }}" \
+            --clear-vpc-connector \
+            --network="default" \
+            --subnet="default" \
+            --vpc-egress="private-ranges-only" \
+            --memory 2Gi \
+            --no-cpu-throttling \
+            --set-env-vars="SPRING_PROFILES_ACTIVE=cloud,\
+                            JAVA_TOOL_OPTIONS=-Xms256m -Xmx512m,\
+                            DB_FLYWAY_URL=jdbc:postgresql:///pagamento_db?cloudSqlInstance=${{ secrets.CLOUD_SQL_INSTANCE }}&socketFactory=com.google.cloud.sql.postgres.SocketFactory,\
+                            DB_URL=jdbc:postgresql://localhost/pagamento_db?cloudSqlInstance=${{ secrets.CLOUD_SQL_INSTANCE }}&socketFactory=com.google.cloud.sql.postgres.SocketFactory,\
+                            DB_USERNAME=postgres,\
+                            DB_PASSWORD=${{ secrets.DB_PASSWORD }},\
+                            KAFKA_BOOTSTRAP_SERVERS=${{ secrets.KAFKA_BOOTSTRAP_SERVERS }},\
+                            LOGSTASH_HOST=logstash-service-791247002252.us-central1.run.app,\
+                            LOGSTASH_PORT=443,\
+                            SERVER_FORWARD_HEADERS_STRATEGY=framework,\
+                            MANAGEMENT_TRACING_ENABLED=false,\
+                            SPRING_ZIPKIN_ENABLED=false"
