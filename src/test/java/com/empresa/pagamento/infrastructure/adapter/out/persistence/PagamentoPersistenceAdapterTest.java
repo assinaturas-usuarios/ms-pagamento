@@ -67,12 +67,12 @@ class PagamentoPersistenceAdapterTest {
   @DisplayName("Deve verificar existência de pagamento para assinatura")
   void deveVerificarExistencia() {
     UUID assinaturaId = UUID.randomUUID();
-    when(jpaRepository.existsByAssinaturaId(assinaturaId)).thenReturn(true);
+    when(jpaRepository.existsByAssinaturaIdAndStatus(assinaturaId, StatusPagamento.APROVADO)).thenReturn(true);
 
     boolean existe = adapter.existePagamentoParaAssinatura(assinaturaId);
 
     assertThat(existe).isTrue();
-    verify(jpaRepository).existsByAssinaturaId(assinaturaId);
+    verify(jpaRepository).existsByAssinaturaIdAndStatus(assinaturaId, StatusPagamento.APROVADO);
   }
 
   @Test

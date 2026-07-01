@@ -1,6 +1,7 @@
 package com.empresa.pagamento.infrastructure.adapter.out.persistence;
 
 import com.empresa.pagamento.domain.model.Pagamento;
+import com.empresa.pagamento.domain.model.StatusPagamento;
 import com.empresa.pagamento.domain.port.out.PagamentoRepositoryPort;
 import com.empresa.pagamento.infrastructure.mapper.PagamentoMapper;
 import java.util.Optional;
@@ -29,7 +30,7 @@ public class PagamentoPersistenceAdapter implements PagamentoRepositoryPort {
 
   @Override
   public boolean existePagamentoParaAssinatura(UUID assinaturaId) {
-    return jpaRepository.existsByAssinaturaId(assinaturaId);
+    return jpaRepository.existsByAssinaturaIdAndStatus(assinaturaId, StatusPagamento.APROVADO);
   }
 
   @Override
