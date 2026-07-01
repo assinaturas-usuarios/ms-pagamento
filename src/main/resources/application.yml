@@ -23,6 +23,9 @@ spring:
       group-id: pagamento-group
     listener:
       observation-enabled: true
+    admin:
+      properties:
+        allow-auto-create-topics: false
 
 kafka:
   topics:
