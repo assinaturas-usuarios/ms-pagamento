@@ -1,0 +1,11 @@
+com\empresa\pagamento\application\usecase\ProcessarPagamentoUseCaseImplTest.class
+com\empresa\pagamento\application\usecase\ProcessarPagamentoUseCaseImplTest$ProcessamentoPagamento.class
+com\empresa\pagamento\domain\model\PagamentoTest$FoiAprovado.class
+com\empresa\pagamento\domain\model\PagamentoTest$Getters.class
+com\empresa\pagamento\infrastructure\adapter\out\kafka\PagamentoPagamentoResultadoProducerTest.class
+com\empresa\pagamento\infrastructure\adapter\in\kafka\RenovacaoSolicitadaConsumerTest.class
+com\empresa\pagamento\infrastructure\simulador\SimuladorPagamentoTest.class
+com\empresa\pagamento\domain\model\PagamentoTest$NovoFactory.class
+com\empresa\pagamento\domain\model\PagamentoTest$ConstructorTests.class
+com\empresa\pagamento\domain\model\PagamentoTest.class
+com\empresa\pagamento\infrastructure\adapter\out\persistence\PagamentoPersistenceAdapterTest.class

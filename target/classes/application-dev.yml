@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: ms-pagamento
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/pagamento_db}
+    username: ${DB_USERNAME:admin}
+    password: ${DB_PASSWORD:admin123}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    show-sql: false
+  flyway:
+    enabled: true
+    url: ${DB_FLYWAY_URL:jdbc:postgresql://localhost:5432/pagamento_db}
+    user: ${DB_USERNAME:admin}
+    password: ${DB_PASSWORD:admin123}
+    locations: classpath:db/migration
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: pagamento-group
+    listener:
+      observation-enabled: true
+
+kafka:
+  topics:
+    renovacao-solicitada: assinatura.renovacao.solicitada
+    pagamento-resultado: pagamento.resultado
+
+pagamento:
+  taxa-aprovacao: ${TAXA_APROVACAO:0.8}
+
+server:
+  port: 8083
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_URL:http://localhost:9411/api/v2/spans}
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  level:
+    org.apache.kafka: ERROR
+    org.springframework.kafka: ERROR
+    net.logstash.logback: ERROR
+    org.springframework.cache: TRACE

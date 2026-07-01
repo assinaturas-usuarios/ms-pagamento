@@ -1,0 +1,6 @@
+C:\Users\luana\Downloads\assinatura-usuarios\ms-pagamento\src\test\java\com\empresa\pagamento\application\usecase\ProcessarPagamentoUseCaseImplTest.java
+C:\Users\luana\Downloads\assinatura-usuarios\ms-pagamento\src\test\java\com\empresa\pagamento\domain\model\PagamentoTest.java
+C:\Users\luana\Downloads\assinatura-usuarios\ms-pagamento\src\test\java\com\empresa\pagamento\infrastructure\adapter\in\kafka\RenovacaoSolicitadaConsumerTest.java
+C:\Users\luana\Downloads\assinatura-usuarios\ms-pagamento\src\test\java\com\empresa\pagamento\infrastructure\adapter\out\kafka\PagamentoResultadoProducerTest.java
+C:\Users\luana\Downloads\assinatura-usuarios\ms-pagamento\src\test\java\com\empresa\pagamento\infrastructure\adapter\out\persistence\PagamentoPersistenceAdapterTest.java
+C:\Users\luana\Downloads\assinatura-usuarios\ms-pagamento\src\test\java\com\empresa\pagamento\infrastructure\simulador\SimuladorPagamentoTest.java
